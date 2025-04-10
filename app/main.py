@@ -1,10 +1,10 @@
-
 from fastapi import FastAPI, Query
 from fastapi.responses import FileResponse
 import yt_dlp
 import uuid
 import os
 import subprocess
+import uvicorn
 
 app = FastAPI()
 
@@ -35,3 +35,7 @@ def download_video(url: str, audio_only: bool = False):
     final_file = os.path.join(OUTPUT_DIR, downloaded_files[-1])
 
     return FileResponse(final_file, filename=os.path.basename(final_file))
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("app.main:app", host="0.0.0.0", port=port)
